@@ -16,7 +16,7 @@ variables:
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
-- task: NuGetToolInstaller@1
+- task: NuGetToolInstaller@NuGetToolInstaller@3
 
 - task: NuGetCommand@NuGetCommand@1
   inputs:
