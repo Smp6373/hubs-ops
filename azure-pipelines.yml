@@ -28,3 +28,51 @@ steps:
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+# app-ci YAML pipeline
+# We are setting up a pipeline resource that references the security-lib-ci
+# pipeline and setting up a pipeline completion trigger so that our app-ci
+# pipeline runs when a run of the security-lib-ci pipeline completes
+resources:
+  pipelines:
+    - pipeline: securitylib # Name of the pipeline resource.
+        source: security-lib-ci # The name of the pipeline referenced by this pipeline resource.
+            project: FabrikamProject # Required only if the source pipeline is in another project
+                trigger: true # Run app-ci pipeline when any run of security-lib-ci completes
+
+                steps:
+                - bash: echo "app-ci runs after security-lib-ci completes"# security-lib-ci YAML pipeline
+                steps:
+                - bash: echo "The security-lib-ci pipeline runs first"resources:
+                  pipelines:
+                    - pipeline: MyCIAlias  
+                        source: Farbrikam-CI  
+                            trigger:    
+                                  stages:         # This stage filter is used when evaluating conditions for 
+                                        - PreProduction # triggering your pipeline. On successful completion of all the stages
+                                              - Production    # provided, your pipeline will be triggered.# app-ci YAML pipeline
+                                              resources:
+                                                pipelines:
+                                                  - pipeline: securitylib
+                                                      source: security-lib-ci
+                                                          trigger: 
+                                                                branches:
+                                                                        include: 
+                                                                                - releases/*
+                                                                                        exclude:
+                                                                                                - releases/old*resources:
+                                                                                                  pipelines:
+                                                                                                    - pipeline: MyCIAlias
+                                                                                                        source: Farbrikam-CI
+                                                                                                            trigger:
+                                                                                                                  tags:        # This filter is used for triggering the pipeline run
+                                                                                                                        - Production # Tags are AND'ed
+                                                                                                                              - Signedhttps://proxy.azure.comaz adp account data-pool delete [--account-name]
+                                                                                                                                                              [--data-pool-name]
+                                                                                                                                                                                              [--ids]
+                                                                                                                                                                                                                              [--no-wait {0, 1, f, false, n, no, t, true, y, yes}]
+                                                                                                                                                                                                                                                              [--resource-group]
+                                                                                                                                                                                                                                                                                              [--subscription]
+                                                                                                                                                                                                                                                                                                                              [--yes]az adp account data-pool list --account-name
+                                                                                                                                                                                                                                                                                                                                                            --resource-groupEXEC managed_backup.sp_backup_config_basic  
+                                                                                                                                                                                                                                                                                                                                                                [@enable_backup = ] { 0 | 1}    ,[@database_name = ] 'database_name'    ,[@container_url = ] 'Azure_Storage_blob_container  
+                                                                                                                                                                                                                                                                                                                                                                    ,[@retention_days = ] 'retention_period_in_days'    ,[@credential_name = ] 'sql_credential_name'az artifacts universal publish --organization https://dev.azure.com/Moonshineweb6373/ --feed Moonshineweb6373 --name my-first-package --version 0.0.1 --description "Welcome to Universal Packages" --path .
